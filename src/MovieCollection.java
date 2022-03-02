@@ -335,21 +335,32 @@ public class MovieCollection
   
   private void listHighestRated()
   {
-    /* TASK 6: IMPLEMENT ME! */
+    ArrayList<Movie> goodMovs = new ArrayList<Movie>();
+    sortMovsByRating(movies);
+    for (int i = 0; i < 50; i++){
+      goodMovs.add(movies.get(i));
+      System.out.println(movies.get(i).getRevenue());
+    }
+    int counter = 1;
+    for(Movie mov: goodMovs){
+      System.out.println(counter + ". " + mov.getTitle());
+      counter++;
+    }
+    System.out.println("Which movie would you like to learn more about?");
+    System.out.print("Enter number: ");
+
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+    displayMovieInfo(goodMovs.get(choice - 1));
   }
   
   private void listHighestRevenue()
   {
     ArrayList<Movie> richMovs = new ArrayList<Movie>();
-    for(int i = 0; i < 50; i++){
+    sortMovsByRev(movies);
+    for (int i = 0; i < 50; i++){
       richMovs.add(movies.get(i));
-    }
-    for(int i = 51; i < movies.size(); i++){
-      for(int j = 0; j < 50; j++){
-        if (movies.get(i).getRevenue() < movies.get(j).getRevenue()){
-          richMovs.set(j, movies.get(i));
-        }
-      }
+      System.out.println(movies.get(i).getRevenue());
     }
     int counter = 1;
     for(Movie mov: richMovs){
@@ -381,6 +392,37 @@ public class MovieCollection
     }
   }
 
+  private void sortMovsByRev(ArrayList<Movie> movs)
+  {
+    for (int j = 1; j < movs.size(); j++)
+    {
+      Movie temp = movs.get(j);
+
+      int possibleIndex = j;
+      while (possibleIndex > 0 && temp.getRevenue() > movs.get(possibleIndex - 1).getRevenue())
+      {
+        movs.set(possibleIndex, movs.get(possibleIndex - 1));
+        possibleIndex--;
+      }
+      movs.set(possibleIndex, temp);
+    }
+  }
+
+  private void sortMovsByRating(ArrayList<Movie> movs)
+  {
+    for (int j = 1; j < movs.size(); j++)
+    {
+      Movie temp = movs.get(j);
+
+      int possibleIndex = j;
+      while (possibleIndex > 0 && temp.getUserRating() > movs.get(possibleIndex - 1).getUserRating())
+      {
+        movs.set(possibleIndex, movs.get(possibleIndex - 1));
+        possibleIndex--;
+      }
+      movs.set(possibleIndex, temp);
+    }
+  }
 
   private void importMovieList(String fileName)
   {
